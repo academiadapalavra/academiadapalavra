@@ -309,6 +309,7 @@ footer strong{color:var(--ink2)}
     <button class="tbtn"     onclick="showTab('tP',this)">📙 Presencial<span class="editing-dot"></span></button>
     <button class="tbtn"     onclick="showTab('tR',this)">📒 Cooperadores<span class="editing-dot"></span></button>
     <button class="tbtn"     onclick="showTab('tH',this)">🏫 Huambo<span class="editing-dot"></span></button>
+    <button class="tbtn"     onclick="showTab('tN',this)">📕 Benfica<span class="editing-dot"></span></button>
     <button class="tbtn cfg" onclick="showTab('tCFG',this)">⚙️ Configurações</button>
   </div>
 
@@ -355,6 +356,15 @@ footer strong{color:var(--ink2)}
     </div>
     <div id="tH-c"></div>
     <div class="exprow"><button class="ebtn pri" onclick="exportCSV('tH')">📥 Exportar CSV</button></div>
+  </div>
+
+  <div id="tN" class="tpanel">
+    <div class="thdr">
+      <div><div class="ttitle" id="title-tN">Turma Benfica</div><div class="tinfo" id="info-tN"></div></div>
+      <div class="tcount" id="cnt-tN"></div>
+    </div>
+    <div id="tN-c"></div>
+    <div class="exprow"><button class="ebtn pri" onclick="exportCSV('tN')">📥 Exportar CSV</button></div>
   </div>
 
   <div id="tCFG" class="tpanel">
@@ -447,7 +457,8 @@ const DEF = {
   tP: { nome:'Turma Presencial',       horario:'Sábados · 09:00–11:00',           n:32, aulas:3, info:['Sábado 1','Sábado 2','Sábado 3'] },
   tR: { nome:'Turma dos Cooperadores', horario:'Domingos · 08:00–09:00',          n:32, aulas:2, info:['Domingo 1','Domingo 2'] },
   tH: { nome:'Turma Huambo',           horario:'Huambo · 2026',                   n:19, aulas:5, info:['Aula 1','Aula 2','Aula 3','Prova','Correção'],
-        grupos: [{label:'Refrescamento', de:1, ate:12}, {label:'1ª Vez', de:13, ate:19}] }
+        grupos: [{label:'Refrescamento', de:1, ate:12}, {label:'1ª Vez', de:13, ate:19}] },
+  tN: { nome:'Turma Benfica',          horario:'Benfica · 2026',                  n:32, aulas:5, info:['Aula 1','Aula 2','Aula 3','Prova','Correção'] }
 };
 
 let DISCS = [
@@ -1071,13 +1082,13 @@ function showConflict(msg) {
 window.dismissConflict = () => document.getElementById('conflict-banner').classList.remove('show');
 
 function markTabEdited(tk) {
-  const tabIds = ['tA','tB','tP','tR','tH','tCFG'];
+  const tabIds = ['tA','tB','tP','tR','tH','tN','tCFG'];
   const idx = tabIds.indexOf(tk);
   const btns = document.querySelectorAll('.tbtn');
   if (btns[idx]) btns[idx].classList.add('being-edited');
 }
 function clearTabEdited(tk) {
-  const tabIds = ['tA','tB','tP','tR','tH','tCFG'];
+  const tabIds = ['tA','tB','tP','tR','tH','tN','tCFG'];
   const idx = tabIds.indexOf(tk);
   const btns = document.querySelectorAll('.tbtn');
   if (btns[idx]) btns[idx].classList.remove('being-edited');
@@ -1431,7 +1442,7 @@ function renderCfg() {
   if (grid) {
     grid.innerHTML = Object.keys(DEF).map(tk => {
       const t = turmas[tk];
-      const ico = tk==='tA'?'📗':tk==='tB'?'📘':tk==='tP'?'📙':'📒';
+      const ico = tk==='tA'?'📗':tk==='tB'?'📘':tk==='tP'?'📙':tk==='tN'?'📕':'📒';
       return `<div class="cfg-card">
         <div class="cfg-card-title">${ico} ${esc(t.nome)}</div>
         <div class="cfg-row">
@@ -1710,7 +1721,7 @@ window.confirmarImportacao = () => {
     document.querySelectorAll('.tpanel').forEach(p => p.classList.remove('on'));
     document.querySelectorAll('.tbtn').forEach(b => b.classList.remove('on'));
     const fp = document.getElementById(targetId);
-    const tabIds = ['tA','tB','tP','tR','tH','tCFG'];
+    const tabIds = ['tA','tB','tP','tR','tH','tN','tCFG'];
     const idx = tabIds.indexOf(targetId);
     const allBtns = document.querySelectorAll('.tbtn');
     if (fp) fp.classList.add('on');
